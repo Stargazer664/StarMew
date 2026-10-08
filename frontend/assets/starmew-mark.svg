@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none">
+  <style>
+    @media (prefers-color-scheme: dark) {
+      .brand-ink { stroke: #F5F1E8; }
+    }
+  </style>
+  <path class="brand-ink" d="M10 19 14 8l10 8L34 8l4 11v9c0 8-6.2 14-14 14S10 36 10 28v-9Z"
+        stroke="#1D1D1B" stroke-width="2.4" stroke-linejoin="round"/>
+  <path class="brand-ink" d="m18 27 6 6 6-6" stroke="#1D1D1B" stroke-width="2.4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m36 4 1.4 4.6L42 10l-4.6 1.4L36 16l-1.4-4.6L30 10l4.6-1.4L36 4Z"
+        fill="#C9963A"/>
+</svg>

@@ -1,0 +1,40 @@
+{
+  "samples": [
+    {
+      "id": "synthetic-0001",
+      "question": "根据合成文档，甲的数值是多少？",
+      "ground_truth": "甲的数值是 10。",
+      "expected_docs": ["fixtures/synthetic.md"],
+      "metadata": {
+        "domain": "synthetic",
+        "question_type": "fact",
+        "answerability": "answerable",
+        "split": "dev",
+        "cluster_id": "synthetic-doc",
+        "reference_reviewed": true,
+        "reference_facts": ["甲的数值是 10"],
+        "evidence": [
+          {"source": "fixtures/synthetic.md", "locator": "L1", "text": "甲=10"}
+        ]
+      }
+    },
+    {
+      "id": "synthetic-0002",
+      "question": "根据合成文档，乙的作者是谁？",
+      "ground_truth": "文档未提供作者信息，无法确定。",
+      "expected_docs": ["fixtures/synthetic.md"],
+      "metadata": {
+        "domain": "synthetic",
+        "question_type": "unanswerable",
+        "answerability": "unanswerable",
+        "split": "test",
+        "cluster_id": "synthetic-missing-author",
+        "reference_reviewed": true,
+        "reference_facts": ["核查合成文档全文，未出现作者信息"],
+        "evidence": [
+          {"source": "fixtures/synthetic.md", "locator": "full document", "text": "缺失事实：作者"}
+        ]
+      }
+    }
+  ]
+}

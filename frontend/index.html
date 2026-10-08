@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StarMew · 星喵助手</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="stylesheet" href="style.css?v=document-recovery-20260930-v2">
+    <!-- Fonts -->
+    <!-- Icons: local inline SVG sprite keeps the visual language consistent and dependency-free. -->
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+        <symbol id="icon-brand" viewBox="0 0 48 48">
+            <path d="M10 19 14 8l10 8L34 8l4 11v9c0 8-6.2 14-14 14S10 36 10 28v-9Z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round" />
+            <path d="m18 27 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="m36 4 1.4 4.6L42 10l-4.6 1.4L36 16l-1.4-4.6L30 10l4.6-1.4L36 4Z" fill="var(--brand-accent)" />
+        </symbol>
+        <symbol id="icon-plus" viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
+        </symbol>
+        <symbol id="icon-trash" viewBox="0 0 24 24">
+            <path d="M5 8h14M10 5h4M8 8l.8 11h6.4L16 8M10 11v5M14 11v5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-refresh" viewBox="0 0 24 24">
+            <path d="M19 8V4l-3 3a7 7 0 1 0 1.3 8.6M19 4l-3 3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-settings" viewBox="0 0 24 24">
+            <path d="m12 3 1.2 1.9 2.2.5 1.9-1.1 1.5 1.5-1.1 1.9.5 2.2L20 11v2l-1.8 1.1-.5 2.2 1.1 1.9-1.5 1.5-1.9-1.1-2.2.5L12 21l-1.2-1.9-2.2-.5-1.9 1.1-1.5-1.5 1.1-1.9-.5-2.2L4 13v-2l1.8-1.1.5-2.2-1.1-1.9 1.5-1.5 1.9 1.1 2.2-.5z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.6" />
+            <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </symbol>
+        <symbol id="icon-logout" viewBox="0 0 24 24">
+            <path d="M14 5h5v14h-5M11 12h9M14 9l-3 3 3 3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-upload" viewBox="0 0 24 24">
+            <path d="M12 15V4m0 0L8 8m4-4 4 4M5 14v5h14v-5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-file" viewBox="0 0 24 24">
+            <path d="M6 3h8l4 4v14H6zM14 3v5h4" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-folder" viewBox="0 0 24 24">
+            <path d="M3.5 6.5h6l2 2h9v10h-17z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-list" viewBox="0 0 24 24">
+            <path d="M8 6h11M8 12h11M8 18h11" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
+            <circle cx="4.5" cy="6" r="1" fill="currentColor" /><circle cx="4.5" cy="12" r="1" fill="currentColor" /><circle cx="4.5" cy="18" r="1" fill="currentColor" />
+        </symbol>
+        <symbol id="icon-inbox" viewBox="0 0 24 24">
+            <path d="M5 5h14l2 8v6H3v-6zM3 13h5l1.5 2h5L16 13h5" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-more" viewBox="0 0 24 24">
+            <circle cx="5" cy="12" r="1.4" fill="currentColor" /><circle cx="12" cy="12" r="1.4" fill="currentColor" /><circle cx="19" cy="12" r="1.4" fill="currentColor" />
+        </symbol>
+        <symbol id="icon-search" viewBox="0 0 24 24">
+            <circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="m15 15 5 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-spark" viewBox="0 0 24 24">
+            <path d="m12 3 1.7 6.3L20 11l-6.3 1.7L12 19l-1.7-6.3L4 11l6.3-1.7zM19 17v4M17 19h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+        </symbol>
+        <symbol id="icon-check" viewBox="0 0 24 24">
+            <path d="m5 12 4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+        </symbol>
+        <symbol id="icon-warning" viewBox="0 0 24 24">
+            <path d="m12 4 9 16H3z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" /><path d="M12 9v5M12 17.5v.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-edit" viewBox="0 0 24 24">
+            <path d="m5 16-.8 4.2L8.4 19 18 9.4 14.6 6zM13 7.6 16.4 11M5 20l3.4-1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-brain" viewBox="0 0 24 24">
+            <path d="M9 5.5A3 3 0 0 0 6 8.4a2.8 2.8 0 0 0 .5 5.4A3 3 0 0 0 9 19.5c1.1 0 2-.5 2.5-1.3M15 5.5A3 3 0 0 1 18 8.4a2.8 2.8 0 0 1-.5 5.4 3 3 0 0 1-2.5 5.7c-1.1 0-2-.5-2.5-1.3M12 4v16M8 10h4M12 14h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" />
+        </symbol>
+        <symbol id="icon-sync" viewBox="0 0 24 24">
+            <path d="M7 7h5V2M17 17h-5v5M12 7a6 6 0 0 1 5.2 3M12 17a6 6 0 0 1-5.2-3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-paperclip" viewBox="0 0 24 24">
+            <path d="m9 12 5.7-5.7a3.2 3.2 0 0 1 4.6 4.5L11 19.1a4.8 4.8 0 0 1-6.8-6.8l8.1-8.1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-stop" viewBox="0 0 24 24">
+            <rect x="6" y="6" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-send" viewBox="0 0 24 24">
+            <path d="m4 5 16 7-16 7 3-7zM7 12h13" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-spinner" viewBox="0 0 24 24">
+            <path d="M12 4a8 8 0 1 1-5.7 2.3" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
+        </symbol>
+        <symbol id="icon-tool" viewBox="0 0 24 24">
+            <path d="m14 6 4-2 2 2-2 4M13 7l4 4-7.5 7.5a2.1 2.1 0 0 1-3-3zM5 19l-1 1" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-chart" viewBox="0 0 24 24">
+            <path d="M5 19V10M12 19V5M19 19v-7" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2.4" />
+        </symbol>
+        <symbol id="icon-file-pdf" viewBox="0 0 24 24">
+            <path d="M6 3h8l4 4v14H6zM14 3v5h4M9 14h6M9 17h4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-file-word" viewBox="0 0 24 24">
+            <path d="M6 3h8l4 4v14H6zM14 3v5h4M9 14l1 4 2-4 2 4 1-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+        <symbol id="icon-file-excel" viewBox="0 0 24 24">
+            <path d="M6 3h8l4 4v14H6zM14 3v5h4M9 13l4 5M13 13l-4 5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
+        </symbol>
+    </svg>
+    <div id="app">
+    <div class="workspace-shell" :class="{ 'sidebar-is-collapsed': sidebarCollapsed, 'inspector-is-open': inspectorOpen, 'mobile-sidebar-is-open': mobileSidebarOpen }">
+
+        <!-- Sidebar -->
+        <aside ref="mobileSidebarPanel" class="workspace-sidebar" :class="{ 'mobile-open': mobileSidebarOpen }" :aria-hidden="sidebarInert" :inert="sidebarInert" aria-label="主导航">
+            <div class="brand-lockup">
+                <div class="logo-icon" role="img" aria-label="星喵助手">
+                    <svg class="brand-mark ui-icon" aria-hidden="true"><use href="#icon-brand"></use></svg>
+                </div>
+                <div v-show="!sidebarCollapsed"><strong>StarMew</strong><small>星喵助手</small></div>
+            </div>
+            <button ref="mobileSidebarFirstAction" @click="handleNewChat" class="nav-btn new-chat-action" aria-label="新建会话" title="新建会话">
+                <svg class="ui-icon" aria-hidden="true"><use href="#icon-plus"></use></svg> <span v-show="!sidebarCollapsed">新建会话</span>
+            </button>
+
+            <nav class="primary-nav">
+                <button class="nav-btn" :class="{ active: activeWorkspace === 'chat' }" @click="switchWorkspace('chat')" aria-label="对话" title="对话" :aria-current="activeWorkspace === 'chat' ? 'page' : null">
+                    <svg class="ui-icon" aria-hidden="true"><use href="#icon-spark"></use></svg><span v-show="!sidebarCollapsed">对话</span>
+                </button>
+                <button v-if="isAdmin" class="nav-btn" :class="{ active: activeWorkspace === 'documents' }" @click="switchWorkspace('documents')" aria-label="文档库" title="文档库" :aria-current="activeWorkspace === 'documents' ? 'page' : null">
+                    <svg class="ui-icon" aria-hidden="true"><use href="#icon-file"></use></svg><span v-show="!sidebarCollapsed">文档库</span>
+                </button>
+                <button class="nav-btn" :class="{ active: activeWorkspace === 'settings' }" @click="switchWorkspace('settings')" aria-label="设置" title="设置" :aria-current="activeWorkspace === 'settings' ? 'page' : null">
+                    <svg class="ui-icon" aria-hidden="true"><use href="#icon-settings"></use></svg><span v-show="!sidebarCollapsed">设置</span>
+                </button>
+            </nav>
+
+            <!-- History list in sidebar -->
+            <section class="conversation-list" v-show="!sidebarCollapsed && isAuthenticated" aria-label="历史会话">
+                <div class="conversation-heading">历史会话</div>
+                <div v-if="sessionsLoading" class="conversation-empty" role="status">正在加载历史会话…</div>
+                <div v-else-if="sessionsError" class="inline-error" role="alert">
+                    <span>{{ sessionsError }}</span>
+                    <button type="button" @click="loadSessions">重试</button>
+                </div>
+                <div v-else-if="sessions.length === 0" class="conversation-empty">暂无历史记录</div>
+                <div class="conversation-items" v-else>
+                    <div
+                        v-for="session in sessions"
+                        :key="session.session_id"
+                        :class="['conversation-item', { active: session.session_id === sessionId }]"
+                    >
+                        <button class="conversation-item-body" @click="loadSession(session.session_id)" :aria-label="'打开会话：' + formatSessionTitle(session)">
+                            <div class="conversation-item-title">{{ formatSessionTitle(session) }}</div>
+                            <div class="conversation-item-meta">
+                                <span>{{ session.message_count }} 条消息</span>
+                                <span>{{ new Date(session.updated_at).toLocaleDateString('zh-CN', {month:'short',day:'numeric'}) }}</span>
+                            </div>
+                        </button>
+                        <button
+                            class="conversation-delete"
+                            title="删除会话"
+                            :aria-label="'删除会话：' + formatSessionTitle(session)"
+                            @click.stop="deleteSession(session.session_id)"
+                        >
+                            <svg class="ui-icon" aria-hidden="true"><use href="#icon-trash"></use></svg>
+                        </button>
+                    </div>
+                </div>
+                <button @click="loadSessions" class="conversation-refresh">
+                    <svg class="ui-icon" aria-hidden="true"><use href="#icon-refresh"></use></svg> 刷新列表
+                </button>
+            </section>
+
+            <div class="sidebar-account">
+                <button v-if="isAuthenticated" @click="handleClearChat" class="nav-btn" aria-label="开始新对话" title="开始新对话">
+                    <svg class="ui-icon" aria-hidden="true"><use href="#icon-plus"></use></svg> <span v-show="!sidebarCollapsed">开始新对话</span>
+                </button>
+                <div v-if="isAuthenticated && !sidebarCollapsed" class="user-badge">
+                    <span>{{ currentUser.username }}</span>
+                    <small>{{ currentUser.role }}</small>
+                </div>
+                <button v-if="isAuthenticated" @click="handleLogout" class="danger-btn logout-btn" aria-label="退出登录" title="退出登录">
+                    <svg class="ui-icon" aria-hidden="true"><use href="#icon-logout"></use></svg> <span v-show="!sidebarCollapsed">退出登录</span>
+                </button>
+            </div>
+            <button @click="toggleSidebar" class="sidebar-toggle-btn" :title="sidebarCollapsed ? '展开侧栏' : '收起侧栏'" :aria-label="sidebarCollapsed ? '展开侧栏' : '收起侧栏'" :aria-expanded="!sidebarCollapsed"></button>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="workspace-main" :inert="mainContentInert" :aria-hidden="mainContentInert">
+            <button v-if="isAuthenticated" ref="mobileNavTrigger" class="mobile-nav-toggle icon-btn" @click="openMobileSidebar" aria-label="打开主导航" :aria-expanded="mobileSidebarOpen">
+                <svg class="ui-icon" aria-hidden="true"><use href="#icon-list"></use></svg>
+            </button>
+            <div v-if="!isAuthenticated" class="auth-panel">
+                <h2>{{ authMode === 'login' ? '登录 StarMew' : '注册 StarMew' }}</h2>
+                <p>登录后即可使用聊天和历史记录；管理员可管理文档知识库。</p>
+                <div class="auth-form">
+                    <div v-if="authError" class="auth-error" role="alert">
+                        <span>{{ authError }}</span>
+                        <button type="button" @click="authError = ''">重新登录</button>
+                    </div>
+                    <input v-model="authForm.username" type="text" placeholder="用户名" />
+                    <input v-model="authForm.password" type="password" placeholder="密码" />
+                    <select v-if="authMode === 'register'" v-model="authForm.role">
+                        <option value="user">普通用户</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                    <input v-if="authMode === 'register' && authForm.role === 'admin'" v-model="authForm.admin_code" type="password" placeholder="管理员邀请码" />
+                    <button class="send-btn auth-submit" :disabled="authLoading" @click="handleAuthSubmit">
+                        {{ authLoading ? '提交中...' : (authMode === 'login' ? '登录' : '注册') }}
+                    </button>
+                    <button class="auth-switch" @click="authMode = authMode === 'login' ? 'register' : 'login'">
+                        {{ authMode === 'login' ? '没有账号？去注册' : '已有账号？去登录' }}
+                    </button>
+                </div>
+            </div>
+
+            <!-- Document library: retain the existing upload and deletion workflow. -->
+            <section v-if="isAuthenticated && activeWorkspace === 'documents'" class="content-view document-library">
+                <header class="content-view-header">
+                    <div>
+                        <p class="content-view-eyebrow">KNOWLEDGE SOURCES</p>
+                        <h1>文档库</h1>
+                        <p>管理 StarMew 可检索的知识来源</p>
+                    </div>
+                    <button @click="loadDocuments" class="btn-secondary">
+                        <svg class="ui-icon" aria-hidden="true"><use href="#icon-refresh"></use></svg> 刷新列表
+                    </button>
+                </header>
+
+                <details v-if="isAdmin" class="diagnostics-panel" open>
+                    <summary class="diagnostics-title"><span>故障定位与耗时</span><small>管理员 · 每 10 秒刷新概览</small></summary>
+                    <div class="diagnostics-body">
+                        <div class="diagnostics-toolbar">
+                            <div class="diagnostics-tabs" role="group" aria-label="诊断对象">
+                                <button id="diagnostics-document-tab" type="button" :aria-pressed="diagnosticsTab === 'document'" aria-controls="diagnostics-detail" @click="diagnosticsTab = 'document'">文档任务</button>
+                                <button id="diagnostics-chat-tab" type="button" :aria-pressed="diagnosticsTab === 'chat'" aria-controls="diagnostics-detail" @click="diagnosticsTab = 'chat'">问答耗时</button>
+                            </div>
+                            <label>统计范围 <select v-model="diagnosticsWindow" @change="changeDiagnosticsWindow"><option value="24h">最近 24 小时</option><option value="7d">最近 7 天</option><option value="30d">最近 30 天</option></select></label>
+                            <button type="button" class="btn-secondary" @click="refreshDiagnostics" :disabled="diagnosticsRefreshing">{{ diagnosticsRefreshing ? '正在刷新…' : '刷新诊断' }}</button>
+                        </div>
+                        <p class="diagnostics-freshness" :class="{ 'diagnostics-stale': diagnosticActiveSummary.stale }" role="status">{{ diagnosticResourceStatus(diagnosticActiveSummary) }}<template v-if="diagnosticActiveSummary.error"> · {{ diagnosticActiveSummary.error }}</template></p>
+                        <p v-if="diagnosticIntegrityMessage(diagnosticActiveSummary)" class="diagnostics-warning" role="status">{{ diagnosticIntegrityMessage(diagnosticActiveSummary) }}</p>
+                        <dl v-if="diagnosticActiveSummary.data?.counts" class="diagnostics-counts">
+                            <div v-for="(count, key) in diagnosticActiveSummary.data.counts" :key="key"><dt>{{ diagnosticLabel(key) }}</dt><dd>{{ count ?? '未知' }}</dd></div>
+                        </dl>
+                        <p v-else class="diagnostics-empty">当前概览未知，等待诊断服务返回数据。</p>
+
+                        <section class="diagnostics-section" aria-labelledby="diagnostics-alert-title">
+                            <div class="diagnostics-toolbar">
+                                <h3 id="diagnostics-alert-title">告警</h3>
+                                <label>范围 <select v-model="diagnosticsAlertState" @change="changeDiagnosticAlertState"><option value="open">未解决</option><option value="resolved">已解决</option><option value="all">全部历史</option></select></label>
+                                <small>确认仅表示已知悉；解决依据实际恢复结果。</small>
+                            </div>
+                            <p class="diagnostics-freshness" :class="{ 'diagnostics-stale': diagnosticsAlerts.stale }" role="status">{{ diagnosticResourceStatus(diagnosticsAlerts) }}<template v-if="diagnosticsAlerts.error"> · {{ diagnosticsAlerts.error }}</template></p>
+                            <p v-if="diagnosticIntegrityMessage(diagnosticsAlerts)" class="diagnostics-warning" role="status">{{ diagnosticIntegrityMessage(diagnosticsAlerts) }}</p>
+                            <p v-if="diagnosticsActionError" class="diagnostics-warning" role="alert">{{ diagnosticsActionError }}</p>
+                            <ol v-if="diagnosticsAlerts.data?.items?.length" class="diagnostics-alerts">
+                                <li v-for="alert in diagnosticsAlerts.data.items" :key="alert.id" :class="'diagnostics-alert-' + alert.severity">
+                                    <div class="diagnostics-alert-heading"><span class="diagnostics-badge">{{ diagnosticLabel(alert.severity) }}</span><strong>{{ alert.code || alert.rule || '未知告警' }}</strong><small>{{ diagnosticLabel(alert.scope) }} · {{ alert.last_seen_at || alert.created_at || alert.first_seen_at || '时间未知' }}</small></div>
+                                    <p>{{ alert.message || alert.summary || '查看关联记录了解发生阶段与安全错误摘要。' }}</p>
+                                    <div class="diagnostics-toolbar">
+                                        <span>{{ alert.acknowledged_at ? '已确认 · ' + alert.acknowledged_at : '尚未确认' }}</span>
+                                        <span :class="{ 'diagnostics-resolved': alert.resolved_at }">{{ alert.resolved_at ? '已解决 · ' + alert.resolved_at : '尚未解决' }}</span>
+                                        <span>发生 {{ alert.occurrences ?? alert.count ?? '未知' }} 次</span>
+                                        <button v-if="!alert.acknowledged_at" type="button" class="btn-secondary" @click="acknowledgeDiagnosticAlert(alert.id)" :disabled="!!diagnosticsAcknowledging[alert.id]">{{ diagnosticsAcknowledging[alert.id] ? '确认中…' : '确认已知悉' }}</button>
+                                        <button v-if="(alert.job_id && ['upload', 'delete'].includes(alert.operation)) || (alert.scope === 'chat' && alert.trace_id)" type="button" class="btn-secondary" @click="openDiagnosticAlert(alert)">查看关联记录</button>
+                                    </div>
+                                    <code>{{ alert.job_id || alert.trace_id || '系统级告警' }}</code>
+                                </li>
+                            </ol>
+                            <p v-else-if="diagnosticsAlerts.data && !diagnosticsAlerts.stale" class="diagnostics-empty">当前筛选范围没有告警。</p>
+                            <p v-else-if="!diagnosticsAlerts.data" class="diagnostics-empty">告警状态未知。</p>
+                            <button v-if="diagnosticsAlerts.data?.next_cursor != null" type="button" class="btn-secondary" @click="loadDiagnosticAlerts(true)" :disabled="diagnosticsAlerts.loading">加载更早告警</button>
+                        </section>
+
+                        <section id="diagnostics-detail" class="diagnostics-section" :aria-labelledby="diagnosticsTab === 'chat' ? 'diagnostics-chat-tab' : 'diagnostics-document-tab'">
+                            <template v-if="diagnosticsTab === 'document'">
+                                <h3>按任务 ID 查看执行历史</h3>
+                                <form class="diagnostics-lookup" @submit.prevent="selectDiagnosticJob()">
+                                    <label>操作<select v-model="diagnosticsJobOperation"><option value="upload">上传</option><option value="delete">删除</option></select></label>
+                                    <label class="diagnostics-id-input">任务 ID<input v-model="diagnosticsJobId" placeholder="32 位任务 ID" autocomplete="off" spellcheck="false" required></label>
+                                    <button type="submit" class="btn-secondary" :disabled="diagnosticsJobDetail.loading">{{ diagnosticsJobDetail.loading ? '查询中…' : '查看任务' }}</button>
+                                </form>
+                                <p class="diagnostics-freshness" :class="{ 'diagnostics-stale': diagnosticsJobDetail.stale }" role="status">{{ diagnosticResourceStatus(diagnosticsJobDetail) }}<template v-if="diagnosticsJobDetail.error"> · {{ diagnosticsJobDetail.error }}</template></p>
+                                <p v-if="diagnosticsJobDetail.data?.diagnostics_available === false" class="diagnostics-empty">该任务没有可用诊断记录。旧任务的阶段与耗时未知。</p>
+                                <p v-if="diagnosticIntegrityMessage(diagnosticsJobDetail)" class="diagnostics-warning" role="status">{{ diagnosticIntegrityMessage(diagnosticsJobDetail) }}</p>
+                                <p v-if="diagnosticsJobSelection" class="diagnostics-freshness">所示任务：<code>{{ diagnosticsJobSelection }}</code></p>
+                                <div v-if="diagnosticsJobDetail.data?.attempts?.length" class="diagnostics-attempts" aria-label="选择执行次数">
+                                    <button v-for="attempt in diagnosticsJobDetail.data.attempts" :key="attempt.attempt" type="button" class="btn-secondary" :aria-pressed="diagnosticsAttempt === Number(attempt.attempt)" @click="selectDiagnosticAttempt(attempt.attempt)">第 {{ attempt.attempt }} 次 · {{ diagnosticStatusLabel(attempt.status) }}<template v-if="attempt.diagnostics_incomplete"> · 记录不完整</template></button>
+                                </div>
+                                <dl v-if="diagnosticSelectedAttempt" class="diagnostics-facts">
+                                    <div><dt>本次结果</dt><dd>{{ diagnosticStatusLabel(diagnosticSelectedAttempt.status) }}</dd></div>
+                                    <div><dt>处理耗时</dt><dd>{{ formatDiagnosticDuration(diagnosticSelectedAttempt.duration_ms) }}</dd></div>
+                                    <div><dt>排队耗时</dt><dd>{{ formatDiagnosticDuration(diagnosticField(diagnosticSelectedAttempt, 'queue_wait_ms')) }}</dd></div>
+                                    <div><dt>补偿耗时</dt><dd>{{ formatDiagnosticDuration(diagnosticField(diagnosticSelectedAttempt, 'rollback_ms')) }}</dd></div>
+                                    <div><dt>索引是否阻塞</dt><dd>{{ diagnosticField(diagnosticSelectedAttempt, 'blocked') === true ? '是' : (diagnosticField(diagnosticSelectedAttempt, 'blocked') === false ? '否' : '未知') }}</dd></div>
+                                </dl>
+                            </template>
+                            <template v-else>
+                                <h3>问答请求记录</h3>
+                                <form class="diagnostics-lookup" @submit.prevent="selectDiagnosticTrace(diagnosticsTraceId)">
+                                    <label class="diagnostics-id-input">Trace ID<input v-model="diagnosticsTraceId" placeholder="输入响应头中的 Trace ID" autocomplete="off" spellcheck="false" required></label>
+                                    <button type="submit" class="btn-secondary" :disabled="diagnosticsTraceDetail.loading">查看请求</button>
+                                </form>
+                                <p class="diagnostics-freshness" :class="{ 'diagnostics-stale': diagnosticsTraces.stale }" role="status">{{ diagnosticResourceStatus(diagnosticsTraces) }}<template v-if="diagnosticsTraces.error"> · {{ diagnosticsTraces.error }}</template></p>
+                                <div v-if="diagnosticsTraces.data?.items?.length" class="diagnostics-trace-list" aria-label="最近问答请求">
+                                    <button v-for="trace in diagnosticsTraces.data.items" :key="trace.trace_id || trace.id" type="button" class="diagnostics-trace-row" :aria-pressed="diagnosticsTraceSelection === (trace.trace_id || trace.id)" @click="selectDiagnosticTrace(trace.trace_id || trace.id)"><code>{{ trace.trace_id || trace.id }}</code><span>{{ diagnosticStatusLabel(trace.status) }}<template v-if="trace.diagnostics_incomplete"> · 记录不完整</template></span><span>{{ formatDiagnosticDuration(trace.duration_ms) }}</span><small>{{ trace.started_at || '时间未知' }}</small></button>
+                                </div>
+                                <p v-else-if="diagnosticsTraces.data && !diagnosticsTraces.stale" class="diagnostics-empty">当前范围没有问答请求记录。</p>
+                                <button v-if="diagnosticsTraces.data?.next_cursor != null" type="button" class="btn-secondary" @click="loadDiagnosticTraces(true)" :disabled="diagnosticsTraces.loading">加载更早请求</button>
+                                <p class="diagnostics-freshness" :class="{ 'diagnostics-stale': diagnosticsTraceDetail.stale }" role="status">{{ diagnosticResourceStatus(diagnosticsTraceDetail) }}<template v-if="diagnosticsTraceDetail.error"> · {{ diagnosticsTraceDetail.error }}</template></p>
+                                <p v-if="diagnosticIntegrityMessage(diagnosticsTraceDetail)" class="diagnostics-warning" role="status">{{ diagnosticIntegrityMessage(diagnosticsTraceDetail) }}</p>
+                                <dl v-if="diagnosticsTraceDetail.data?.trace" class="diagnostics-facts">
+                                    <div><dt>请求结果</dt><dd>{{ diagnosticStatusLabel(diagnosticsTraceDetail.data.trace.status) }}</dd></div>
+                                    <div><dt>服务端总耗时</dt><dd>{{ formatDiagnosticDuration(diagnosticsTraceDetail.data.trace.duration_ms) }}</dd></div>
+                                    <div><dt>首段答案等待</dt><dd>{{ formatDiagnosticDuration(diagnosticField(diagnosticsTraceDetail.data.trace, 'answer_first_content_ms') ?? diagnosticField(diagnosticsTraceDetail.data.trace, 'first_answer_ms')) }}</dd></div>
+                                    <div><dt>开始时间</dt><dd>{{ diagnosticsTraceDetail.data.trace.started_at || '未知' }}</dd></div>
+                                </dl>
+                            </template>
+
+                            <div v-if="diagnosticFailedSpans.length" class="diagnostics-warning">
+                                <strong>失败操作记录</strong>
+                                <p v-for="span in diagnosticFailedSpans" :key="span.span_id || span.id">{{ diagnosticLabel(span.stage) }} · {{ span.component || '组件未知' }} · {{ span.code || '错误码未知' }} · {{ span.error_type || '异常类型未知' }}<template v-if="span.message"> · {{ span.message }}</template></p>
+                                <small>原始操作与补偿操作分别记录。需要恢复数据时，请使用本页任务的显式恢复操作。</small>
+                            </div>
+                            <div v-if="diagnosticActiveSpans.length" class="diagnostics-table-wrap" tabindex="0" aria-label="各阶段耗时，可横向滚动">
+                                <table class="diagnostics-table"><caption>实际操作明细 · 父子阶段不可重复相加</caption><thead><tr><th scope="col">阶段 / 组件</th><th scope="col">用途 / 模型</th><th scope="col">结果</th><th scope="col">耗时</th></tr></thead><tbody>
+                                    <tr v-for="(span, index) in diagnosticActiveSpans" :key="span.span_id || span.id || index"><td><span>{{ span.parent_span_id ? '↳ ' : '' }}{{ diagnosticLabel(span.stage) }}</span><small>{{ span.component || '组件未知' }}<template v-if="diagnosticField(span, 'retrieval_round') != null"> · 第 {{ diagnosticField(span, 'retrieval_round') }} 轮</template></small></td><td>{{ diagnosticLabel(diagnosticField(span, 'purpose')) }}<small>{{ diagnosticField(span, 'model') || '模型未知或不适用' }}<template v-if="diagnosticField(span, 'provider')"> · {{ diagnosticField(span, 'provider') }}</template></small></td><td>{{ diagnosticStatusLabel(span.status) }}<small v-if="span.code && ['failed', 'degraded'].includes(span.status)">{{ span.code }}</small></td><td>{{ ['skipped', 'not_executed'].includes(span.status) ? '未执行' : formatDiagnosticDuration(span.duration_ms) }}<small v-if="diagnosticField(span, 'first_content_ms') != null">首段 {{ formatDiagnosticDuration(diagnosticField(span, 'first_content_ms')) }}</small></td></tr>
+                                </tbody></table>
+                            </div>
+                            <p v-else class="diagnostics-empty">{{ diagnosticMissingStagesMessage }}</p>
+                            <details v-if="diagnosticsTab === 'document' && diagnosticsAttempt !== null" class="diagnostics-timeline">
+                                <summary>本次执行事件时间线</summary>
+                                <p class="diagnostics-freshness" :class="{ 'diagnostics-stale': diagnosticsEvents.stale }" role="status">{{ diagnosticResourceStatus(diagnosticsEvents) }}<template v-if="diagnosticsEvents.error"> · {{ diagnosticsEvents.error }}</template></p>
+                                <ol><li v-for="event in diagnosticsEvents.data?.items || []" :key="event.id || event.event_id"><span>{{ event.timestamp || event.created_at || '时间未知' }}</span><strong>{{ event.name || event.event || event.stage || '未知事件' }}</strong><p>{{ diagnosticStatusLabel(event.status) }} · {{ event.component || '组件未知' }} · {{ event.code || '无错误码' }}<template v-if="event.message"> · {{ event.message }}</template></p></li></ol>
+                                <button v-if="diagnosticsEvents.data?.next_cursor != null" type="button" class="btn-secondary" @click="loadDiagnosticEvents(true)" :disabled="diagnosticsEvents.loading">加载后续事件</button>
+                            </details>
+                            <details v-if="diagnosticsTab === 'chat' && diagnosticsTraceDetail.data" class="diagnostics-timeline">
+                                <summary>请求事件时间线</summary>
+                                <ol><li v-for="event in diagnosticsTraceDetail.data.events || []" :key="event.id || event.event_id"><span>{{ event.timestamp || event.created_at || '时间未知' }}</span><strong>{{ event.name || event.event || event.stage || '未知事件' }}</strong><p>{{ diagnosticStatusLabel(event.status) }} · {{ event.code || '无错误码' }}<template v-if="event.message"> · {{ event.message }}</template></p></li></ol>
+                            </details>
+                        </section>
+
+                        <details class="diagnostics-section diagnostics-groups">
+                            <summary>分组耗时统计</summary>
+                            <p>仅统计完整结束的样本。缺失、取消或未执行记录不作为成功样本；阶段累计耗时不等同请求等待时间。</p>
+                            <div v-if="diagnosticActiveSummary.data?.groups?.length" class="diagnostics-table-wrap" tabindex="0" aria-label="分组耗时，可横向滚动">
+                                <table class="diagnostics-table"><thead><tr><th scope="col">阶段 / 用途 / 模型</th><th scope="col">结果</th><th scope="col">样本</th><th scope="col">平均</th><th scope="col">P50</th><th scope="col">P95</th></tr></thead><tbody><tr v-for="(group, index) in diagnosticActiveSummary.data.groups" :key="index"><td>{{ diagnosticLabel(group.stage) }}<small>{{ diagnosticLabel(group.purpose) }} · {{ group.model || '模型未知或不适用' }}</small><small v-if="group.provider || group.mode || group.cold_start != null">{{ group.provider || '提供方未知' }} · {{ group.mode || '模式未记录' }}<template v-if="group.cold_start != null"> · {{ group.cold_start ? '冷启动' : '热启动' }}</template></small></td><td>{{ diagnosticStatusLabel(group.status) }}</td><td>{{ group.count ?? '未知' }}<small>未知 {{ group.unknown_count ?? '未知' }} · 取消 {{ group.cancelled_count ?? '未知' }}</small></td><td>{{ formatDiagnosticDuration(group.avg_ms) }}</td><td>{{ formatDiagnosticDuration(group.p50_ms) }}</td><td>{{ formatDiagnosticDuration(group.p95_ms) }}<small v-if="group.insufficient_samples">样本不足</small></td></tr></tbody></table>
+                            </div>
+                            <p v-else class="diagnostics-empty">暂无可用分组统计。</p>
+                        </details>
+                    </div>
+                </details>
+
+                <section class="upload-zone">
+                    <div class="section-heading">
+                        <div>
+                            <h2><svg class="ui-icon" aria-hidden="true"><use href="#icon-upload"></use></svg> 上传文档</h2>
+                            <p>支持 PDF、Word、Excel 与 Markdown，可选择多个文件或整个文件夹。</p>
+                        </div>
+                    </div>
+                    <div class="upload-area">
+                        <input 
+                            type="file" 
+                            ref="fileInput" 
+                            @change="handleFileSelect"
+                            accept=".pdf,.doc,.docx,.xls,.xlsx,.md,.markdown"
+                            multiple
+                            style="display: none"
+                        />
+                        <input
+                            type="file"
+                            ref="folderInput"
+                            @change="handleFileSelect"
+                            accept=".pdf,.doc,.docx,.xls,.xlsx,.md,.markdown"
+                            webkitdirectory
+                            directory
+                            multiple
+                            style="display: none"
+                        />
+                        <div class="upload-actions">
+                            <button @click="$refs.fileInput.click()" class="upload-btn" :disabled="isUploading">
+                                <svg class="ui-icon" aria-hidden="true"><use href="#icon-upload"></use></svg> 选择文件
+                            </button>
+                            <button @click="$refs.folderInput.click()" class="btn-secondary upload-folder-btn" :disabled="isUploading">
+                                <svg class="ui-icon" aria-hidden="true"><use href="#icon-folder"></use></svg> 选择文件夹
+                            </button>
+                        </div>
+                        <div v-if="selectedFiles.length" class="selected-file selected-files-summary">
+                            <svg class="ui-icon" aria-hidden="true"><use href="#icon-file"></use></svg>
+                            <span>
+                                <strong>已选择 {{ selectedFiles.length }} 个文档</strong>
+                                <small>{{ selectedFiles[0].name }}<template v-if="selectedFiles.length > 1"> 等 · 共 {{ formatFileSize(selectedFiles.reduce((total, file) => total + file.size, 0)) }}</template></small>
+                            </span>
+                            <button @click="uploadDocument" class="btn-primary" :disabled="isUploading || uploadStatusUnknowns.length > 0">
+                                <svg class="ui-icon" aria-hidden="true"><use href="#icon-upload"></use></svg> {{ isUploading ? '处理中...' : (uploadStatusUnknowns.length ? '请先确认后台状态' : '开始上传') }}
+                            </button>
+                        </div>
+                    </div>
+                    <div v-if="uploadHistoryError" class="batch-failure-summary" role="status">
+                        <p>{{ uploadHistoryError }}</p>
+                        <button type="button" class="btn-secondary" @click="loadUploadJobs" :disabled="uploadHistoryLoading">重新加载任务记录</button>
+                    </div>
+                </section>
+
+                <section v-if="uploadSteps.length" class="task-card" :class="{ collapsed: uploadProgressCollapsed }">
+                    <button type="button" class="task-card-header" @click="toggleUploadProgressCollapsed" :aria-expanded="!uploadProgressCollapsed" aria-controls="upload-task-steps">
+                        <span>
+                            <small>上传任务</small>
+                            <strong>{{ uploadProgress || '准备处理文档' }}</strong>
+                        </span>
+                        <span class="task-toggle">{{ uploadProgressCollapsed ? '展开' : '收起' }}</span>
+                    </button>
+                    <div id="upload-task-steps" v-show="!uploadProgressCollapsed" class="task-step-list">
+                        <div
+                            v-for="step in uploadSteps"
+                            :key="step.key"
+                            class="task-step"
+                            :class="`task-step-${step.status}`"
+                        >
+                            <div class="task-step-header">
+                                <span class="task-step-label">{{ step.label }}</span>
+                                <span class="task-step-percent">{{ step.percent }}%</span>
+                            </div>
+                            <div class="task-step-bar" role="progressbar" :aria-label="step.label" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="step.percent">
+                                <div class="task-step-fill" :style="{ width: step.percent + '%' }"></div>
+                            </div>
+                            <div v-if="step.message" class="task-step-message">{{ step.message }}</div>
+                        </div>
+                        <div v-if="uploadFailures.length" class="batch-failure-summary" role="alert">
+                            <strong>未完成文件</strong>
+                            <ul>
+                                <li v-for="failure in uploadFailures" :key="failure.jobId || failure.filename">
+                                    <span>{{ failure.filename }}</span>
+                                    <small>{{ failure.message }}</small>
+                                    <small v-if="failure.attempt">第 {{ failure.attempt }} 次处理</small>
+                                    <small v-if="failure.recoveryRequired">需先恢复数据，再重新处理。</small>
+                                    <div v-if="failure.jobId" class="upload-actions">
+                                        <button type="button" class="btn-secondary" @click="selectDiagnosticJob('upload', failure.jobId)">故障详情</button>
+                                        <button type="button" class="btn-secondary" @click="recheckUploadJob(failure)" :disabled="isUploading || uploadRecoveryBusy[failure.jobId]">重新查询状态</button>
+                                        <button v-if="failure.recoveryRequired" type="button" class="btn-secondary" @click="recoverUploadData(failure)" :disabled="isUploading || uploadRecoveryBusy[failure.jobId]">恢复数据</button>
+                                        <button v-else-if="failure.retryable" type="button" class="btn-secondary" @click="retryUploadJob(failure)" :disabled="isUploading || uploadRecoveryBusy[failure.jobId]">重试处理</button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="uploadStatusUnknowns.length" class="batch-failure-summary batch-status-unknown" role="status">
+                            <strong>后台状态待确认</strong>
+                            <ul>
+                                <li v-for="item in uploadStatusUnknowns" :key="item.jobId">
+                                    <span>{{ item.filename }}</span>
+                                    <small>{{ item.message }}</small>
+                                    <button type="button" class="btn-secondary" @click="recheckUploadJob(item)" :disabled="isUploading || uploadRecoveryBusy[item.jobId]">重新查询状态</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section v-if="deleteHistoryError || Object.values(deleteJobs).some(job => job.status !== 'completed')" class="batch-failure-summary" aria-label="删除任务与恢复">
+                    <h2>删除任务</h2>
+                    <p v-if="deleteHistoryError" role="status">{{ deleteHistoryError }}</p>
+                    <button type="button" class="btn-secondary" @click="loadDeleteJobs" :disabled="deleteHistoryLoading">刷新删除任务</button>
+                    <ul>
+                        <template v-for="(job, filename) in deleteJobs" :key="filename">
+                            <li v-if="job.status !== 'completed'">
+                                <strong>{{ filename }}</strong>
+                                <small>{{ job.message }}</small>
+                                <div class="upload-actions">
+                                    <button v-if="job.jobId" type="button" class="btn-secondary" @click="selectDiagnosticJob('delete', job.jobId)">故障详情</button>
+                                    <button v-if="job.jobId" type="button" class="btn-secondary" @click="recoverDeleteData(filename)" :disabled="deleteRecoveryBusy">{{ job.recoveryRequired ? '恢复数据' : '检查并恢复任务' }}</button>
+                                    <button v-if="job.jobId" type="button" class="btn-secondary" @click="recheckDeleteJob(filename)" :disabled="deleteRecoveryBusy">核对状态</button>
+                                    <button v-if="job.status === 'failed' && !job.recoveryRequired" type="button" class="btn-secondary" @click="deleteDocument(filename)" :disabled="deleteRecoveryBusy">重新删除</button>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                </section>
+
+                <section class="document-collection">
+                    <div class="section-heading document-collection-heading">
+                        <div>
+                            <h2><svg class="ui-icon" aria-hidden="true"><use href="#icon-list"></use></svg> 已上传文档</h2>
+                            <p>删除会清理检索索引并保留本地原文件；处理中断时可恢复数据。</p>
+                        </div>
+                        <span v-if="!documentsLoading" class="collection-count">{{ documents.length }} 个来源</span>
+                    </div>
+
+                    <div v-if="documentsLoading" class="loading-indicator">
+                        加载中...
+                    </div>
+                    <div v-else-if="documentsError" class="inline-error document-error" role="alert">
+                        <span>{{ documentsError }}</span>
+                        <button type="button" class="btn-secondary" @click="loadDocuments">重试</button>
+                    </div>
+                    
+                    <div v-else-if="documents.length === 0" class="empty-documents">
+                        <svg class="ui-icon empty-documents-icon" aria-hidden="true"><use href="#icon-inbox"></use></svg>
+                        <p>暂无文档</p>
+                    </div>
+                    
+                    <div v-else class="documents-list">
+                        <div 
+                            v-for="doc in documents" 
+                            :key="doc.filename"
+                            class="document-item"
+                            :class="{ deleting: deleteJobs[doc.filename]?.status === 'running' }"
+                        >
+                            <div class="document-main">
+                                <div class="document-row">
+                                    <div class="document-info">
+                                        <div :class="['document-icon', `document-icon-${(doc.file_type || 'file').toLowerCase()}`]">
+                                            <svg class="ui-icon" aria-hidden="true"><use :href="'#icon-' + getFileIcon(doc.file_type)"></use></svg>
+                                        </div>
+                                        <div class="document-details">
+                                            <div class="document-name">{{ doc.filename }}</div>
+                                            <div class="document-meta">
+                                                <span>{{ doc.file_type }}</span>
+                                                <span>{{ doc.chunk_count }} 个文本片段</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button 
+                                        @click="deleteDocument(doc.filename)" 
+                                        class="btn-danger"
+                                        title="删除文档"
+                                        :aria-label="'删除文档：' + doc.filename"
+                                        :disabled="isDeleteActionLocked(doc.filename)"
+                                    >
+                                        <svg class="ui-icon" :class="{ 'ui-icon-spin': deleteJobs[doc.filename]?.status === 'running' }" aria-hidden="true"><use :href="'#icon-' + getDeleteButtonIcon(doc.filename)"></use></svg>
+                                    </button>
+                                </div>
+
+                                <div
+                                    v-if="deleteJobs[doc.filename]"
+                                    class="task-card delete-task-card"
+                                    :class="{ collapsed: deleteJobs[doc.filename].collapsed }"
+                                >
+                                    <button type="button" class="task-card-header" @click="toggleDeleteJobCollapsed(doc.filename)" :aria-expanded="!deleteJobs[doc.filename].collapsed" :aria-controls="getDeleteTaskStepsId(doc.filename)">
+                                        <span>
+                                            <small>删除任务</small>
+                                            <strong>{{ deleteJobs[doc.filename].message || '准备删除文档' }}</strong>
+                                        </span>
+                                        <span class="task-toggle">{{ deleteJobs[doc.filename].collapsed ? '展开' : '收起' }}</span>
+                                    </button>
+                                    <div :id="getDeleteTaskStepsId(doc.filename)" v-show="!deleteJobs[doc.filename].collapsed" class="task-step-list">
+                                        <div
+                                            v-for="step in deleteJobs[doc.filename].steps"
+                                            :key="step.key"
+                                            class="task-step"
+                                            :class="`task-step-${step.status}`"
+                                        >
+                                            <div class="task-step-header">
+                                                <span class="task-step-label">{{ step.label }}</span>
+                                                <span class="task-step-percent">{{ step.percent }}%</span>
+                                            </div>
+                                            <div class="task-step-bar" role="progressbar" :aria-label="step.label" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="step.percent">
+                                                <div class="task-step-fill" :style="{ width: step.percent + '%' }"></div>
+                                            </div>
+                                            <div v-if="step.message" class="task-step-message">{{ step.message }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <section v-if="isAuthenticated && activeWorkspace === 'settings'" class="content-view settings-view">
+                <header class="content-view-header">
+                    <div>
+                        <p class="content-view-eyebrow">PREFERENCES</p>
+                        <h1>设置</h1>
+                        <p>调整 StarMew 的显示与使用偏好</p>
+                    </div>
+                </header>
+                <div class="settings-group">
+                    <div>
+                        <h2>界面外观</h2>
+                        <p>选择适合当前环境的主题，系统模式会随设备设置自动切换。</p>
+                    </div>
+                    <label class="theme-control settings-theme-control">
+                        <span>主题</span>
+                        <select :value="themePreference" @change="setThemePreference($event.target.value)" aria-label="界面主题">
+                            <option value="system">跟随系统</option>
+                            <option value="light">浅色</option>
+                            <option value="dark">深色</option>
+                        </select>
+                    </label>
+                </div>
+            </section>
+
+            <section v-show="isAuthenticated && activeWorkspace === 'chat'" class="chat-workspace">
+                <header class="workspace-header">
+                    <div class="workspace-title">
+                        <strong>{{ currentConversationTitle }}</strong>
+                        <small>StarMew</small>
+                    </div>
+                </header>
+
+                <div ref="chatContainer" class="conversation-scroll">
+                    <div class="conversation-document">
+                        <section v-if="messages.length === 0" class="welcome-state">
+                            <div class="big-avatar" role="img" aria-label="星喵">
+                                <svg class="brand-mark ui-icon" aria-hidden="true"><use href="#icon-brand"></use></svg>
+                            </div>
+                            <p class="welcome-eyebrow">STARMEW KNOWLEDGE DESK</p>
+                            <h2>从你的资料开始，找到清晰答案</h2>
+                            <p>提问、梳理或验证知识库内容，星喵会把检索路径留在回答旁边。</p>
+                            <div class="prompt-suggestions" aria-label="建议问题">
+                                <button @click="userInput = '请总结知识库中的关键内容'">总结关键内容</button>
+                                <button @click="userInput = '这些资料有哪些共同结论？'">比较资料结论</button>
+                                <button @click="userInput = '帮我找到支持这个观点的原文'">查找原文依据</button>
+                            </div>
+                        </section>
+
+                        <article v-for="(msg, index) in messages" :key="index" :class="['message-row', msg.isUser ? 'message-user' : 'message-assistant']">
+                            <div v-if="!msg.isUser && msg.isThinking && !msg.text" class="run-status" role="status" aria-live="polite">
+                                <span class="run-pulse" aria-hidden="true"></span>
+                                <span>{{ msg.ragSteps?.at(-1)?.label || '正在思考' }}</span>
+                            </div>
+                            <div v-else class="message-body" v-html="msg.isUser ? escapeHtml(msg.text) : parseMarkdown(msg.text)"></div>
+                            <small v-if="!msg.isUser && ['interrupted', 'failed'].includes(msg.status)" class="composer-disclaimer">{{ msg.status === 'interrupted' ? '回答已中断' : '回答未完成' }}</small>
+                            <div v-if="!msg.isUser && (msg.ragTrace || msg.streamError)" class="message-actions">
+                                <button v-if="msg.ragTrace" @click="openInspector(index, 'process')">查看过程</button>
+                                <button v-if="msg.ragTrace" @click="openInspector(index, 'sources')">引用来源</button>
+                                <button v-if="msg.streamError" @click="retryMessage(msg)">重试回答</button>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="composer-dock">
+                    <div class="composer-shell">
+                        <button class="attach-btn" title="添加附件" aria-label="添加附件"><svg class="ui-icon" aria-hidden="true"><use href="#icon-paperclip"></use></svg></button>
+                        <textarea
+                            v-model="userInput"
+                            @keydown="handleKeyDown"
+                            @compositionstart="handleCompositionStart"
+                            @compositionend="handleCompositionEnd"
+                            @input="autoResize"
+                            :placeholder="isLoading ? '可输入补充信息，发送后重新生成…' : '向 StarMew 提问…'"
+                            rows="1"
+                            ref="textarea"
+                        ></textarea>
+                        <button v-if="isLoading" @click="handleStop" class="send-btn stop-btn" :disabled="isInterrupting && !pendingSupplement" title="终止回答" aria-label="终止回答">
+                            <svg class="ui-icon" aria-hidden="true"><use href="#icon-stop"></use></svg>
+                        </button>
+                        <button v-if="isLoading && userInput.trim()" @click="handleSupplement" class="send-btn" :disabled="isInterrupting" title="补充信息并重新生成" aria-label="补充信息并重新生成">
+                            <svg class="ui-icon" aria-hidden="true"><use href="#icon-send"></use></svg>
+                        </button>
+                        <button v-if="!isLoading" @click="handleSend" class="send-btn" title="发送" aria-label="发送消息">
+                            <svg class="ui-icon" aria-hidden="true"><use href="#icon-send"></use></svg>
+                        </button>
+                    </div>
+                    <p v-if="isInterrupting" class="composer-disclaimer" role="status">正在结束上一轮处理，请稍候…</p>
+                    <p class="composer-disclaimer">AI 生成的内容可能包含错误，请仔细甄别。</p>
+                </div>
+            </section>
+        </main>
+        <aside ref="inspectorPanel" class="inspector-panel" :class="{ open: inspectorOpen }" :aria-hidden="!inspectorOpen" :inert="!inspectorOpen" aria-label="回答详情">
+            <header class="inspector-header">
+                <div role="tablist" aria-label="回答详情">
+                    <button id="inspector-process-tab" ref="inspectorProcessTab" role="tab" :aria-selected="inspectorTab === 'process'" aria-controls="inspector-process-panel" :tabindex="inspectorTab === 'process' ? 0 : -1" @click="inspectorTab = 'process'" @keydown.right.prevent="focusInspectorTab('sources')">运行过程</button>
+                    <button id="inspector-sources-tab" ref="inspectorSourcesTab" role="tab" :aria-selected="inspectorTab === 'sources'" aria-controls="inspector-sources-panel" :tabindex="inspectorTab === 'sources' ? 0 : -1" @click="inspectorTab = 'sources'" @keydown.left.prevent="focusInspectorTab('process')">引用来源</button>
+                </div>
+                <button @click="closeInspector" aria-label="关闭回答详情">×</button>
+            </header>
+            <div v-if="!inspectorMessage" class="inspector-empty">选择一条回答查看详情</div>
+            <div v-else-if="inspectorTab === 'process'" id="inspector-process-panel" class="process-timeline" role="tabpanel" aria-labelledby="inspector-process-tab" tabindex="0">
+                <div v-for="(step, index) in inspectorMessage.ragSteps || []" :key="index" class="process-step">
+                    <span class="process-marker" aria-hidden="true"></span>
+                    <div>
+                        <strong>{{ step.label }}</strong>
+                        <p v-if="step.detail">{{ step.detail }}</p>
+                    </div>
+                </div>
+                <div v-if="!(inspectorMessage.ragSteps || []).length" class="inspector-empty">此回答没有运行步骤</div>
+                <details v-if="inspectorMessage.ragTrace" class="advanced-trace">
+                    <summary>高级参数</summary>
+                    <dl class="trace-grid">
+                        <div><dt>工具</dt><dd>{{ inspectorMessage.ragTrace.tool_used ? inspectorMessage.ragTrace.tool_name : '未使用' }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.retrieval_stage"><dt>检索阶段</dt><dd>{{ inspectorMessage.ragTrace.retrieval_stage }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.grade_score"><dt>相关性评分</dt><dd>{{ inspectorMessage.ragTrace.grade_score }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.grade_route"><dt>评分决策</dt><dd>{{ inspectorMessage.ragTrace.grade_route }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rewrite_needed !== null && inspectorMessage.ragTrace.rewrite_needed !== undefined"><dt>需要重写</dt><dd>{{ inspectorMessage.ragTrace.rewrite_needed ? '是' : '否' }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rewrite_strategy"><dt>重写策略</dt><dd>{{ inspectorMessage.ragTrace.rewrite_strategy }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rewrite_query"><dt>重写查询</dt><dd>{{ inspectorMessage.ragTrace.rewrite_query }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.retrieval_mode"><dt>检索模式</dt><dd>{{ inspectorMessage.ragTrace.retrieval_mode }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.candidate_k"><dt>候选召回数</dt><dd>{{ inspectorMessage.ragTrace.candidate_k }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.leaf_retrieve_level"><dt>叶子召回层级</dt><dd>L{{ inspectorMessage.ragTrace.leaf_retrieve_level }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.auto_merge_enabled !== null && inspectorMessage.ragTrace.auto_merge_enabled !== undefined"><dt>Auto-merging 启用</dt><dd>{{ inspectorMessage.ragTrace.auto_merge_enabled ? '是' : '否' }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.auto_merge_applied !== null && inspectorMessage.ragTrace.auto_merge_applied !== undefined"><dt>Auto-merging 应用</dt><dd>{{ inspectorMessage.ragTrace.auto_merge_applied ? '是' : '否' }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.auto_merge_threshold"><dt>合并阈值</dt><dd>{{ inspectorMessage.ragTrace.auto_merge_threshold }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.auto_merge_replaced_chunks"><dt>合并替换片段</dt><dd>{{ inspectorMessage.ragTrace.auto_merge_replaced_chunks }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.auto_merge_steps"><dt>合并轮次</dt><dd>{{ inspectorMessage.ragTrace.auto_merge_steps }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rerank_enabled !== null && inspectorMessage.ragTrace.rerank_enabled !== undefined"><dt>Rerank 已配置</dt><dd>{{ inspectorMessage.ragTrace.rerank_enabled ? '是' : '否' }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rerank_applied !== null && inspectorMessage.ragTrace.rerank_applied !== undefined"><dt>Rerank 已执行</dt><dd>{{ inspectorMessage.ragTrace.rerank_applied ? '是' : '否' }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rerank_model"><dt>Rerank 模型</dt><dd>{{ inspectorMessage.ragTrace.rerank_model }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.rerank_error"><dt>Rerank 状态</dt><dd>{{ inspectorMessage.ragTrace.rerank_error }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.expansion_type"><dt>扩展策略</dt><dd>{{ inspectorMessage.ragTrace.expansion_type }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.step_back_question"><dt>退步问题</dt><dd>{{ inspectorMessage.ragTrace.step_back_question }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.expanded_query"><dt>扩展查询</dt><dd>{{ inspectorMessage.ragTrace.expanded_query }}</dd></div>
+                        <div v-if="inspectorMessage.ragTrace.hypothetical_doc"><dt>HyDE 文档</dt><dd>{{ inspectorMessage.ragTrace.hypothetical_doc }}</dd></div>
+                    </dl>
+                </details>
+            </div>
+            <div v-else id="inspector-sources-panel" class="source-list" role="tabpanel" aria-labelledby="inspector-sources-tab" tabindex="0">
+                <section v-for="group in groupedInspectorSources" :key="group.filename" class="source-group">
+                    <h3>{{ group.filename }}</h3>
+                    <article v-for="(chunk, index) in group.chunks" :key="`${group.filename}-${chunk.page_number || 'na'}-${index}`" class="source-card">
+                        <div class="source-card-heading">
+                            <strong>片段 {{ index + 1 }}</strong>
+                            <span v-if="chunk.page_number">第 {{ chunk.page_number }} 页</span>
+                        </div>
+                        <div class="source-card-meta">
+                            <span>RRF #{{ chunk.rrf_rank || (index + 1) }}</span>
+                            <span v-if="chunk.rerank_score !== null && chunk.rerank_score !== undefined">Rerank {{ Number(chunk.rerank_score).toFixed(4) }}</span>
+                        </div>
+                        <p v-if="chunk.text">{{ chunk.text }}</p>
+                    </article>
+                </section>
+                <div v-if="!inspectorSources.length" class="inspector-empty">此回答没有引用来源</div>
+            </div>
+        </aside>
+        <button v-if="mobileOverlayVisible" class="mobile-scrim" @click="closeMobilePanels" aria-label="关闭侧栏或详情"></button>
+
+        <div class="toast-region" aria-live="polite" aria-atomic="false">
+            <div v-for="toast in toasts" :key="toast.id" :class="['toast', `toast-${toast.tone}`]">
+                <span>{{ toast.message }}</span>
+                <button type="button" @click="dismissToast(toast.id)" aria-label="关闭通知">×</button>
+            </div>
+        </div>
+
+        <div v-if="confirmation" class="dialog-backdrop" @click.self="cancelPendingAction">
+            <section class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title" @keydown.tab="trapConfirmationFocus">
+                <p class="dialog-eyebrow">请确认操作</p>
+                <h2 id="confirm-title">{{ confirmation.title }}</h2>
+                <p>{{ confirmation.message }}</p>
+                <div class="dialog-actions">
+                    <button ref="confirmCancelButton" type="button" class="btn-secondary" @click="cancelPendingAction">取消</button>
+                    <button ref="confirmActionButton" type="button" :class="['dialog-confirm', `dialog-confirm-${confirmation.tone}`]" @click="confirmPendingAction">{{ confirmation.confirmLabel }}</button>
+                </div>
+            </section>
+        </div>
+    </div>
+    </div>
+
+    <script src="script.js?v=document-recovery-20260930-v2"></script>
+</body>
+</html>

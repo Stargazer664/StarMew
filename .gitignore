@@ -1,0 +1,28 @@
+# Runtime data and secrets
+.env
+.env.*
+!.env.example
+data/
+volumes/
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.pem
+*.key
+# Python and local tooling
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.pytest_tmp*/
+.task_tmp*/
+.tmp*/
+.uv-cache*/
+.uv-task-cache/
+.superpowers/
+.vscode/
+.DS_Store
